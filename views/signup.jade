@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    h1 Top Secret Website
+
+    h2 Sign up for an account
+
+    if message.length > 0
+        p=message
+
+    form(action='/signup' method='post')
+        label username
+        input(type='text' name='username' required)
+        br
+        label password
+        input(type='password' name='password' required)
+        br
+        input(type='submit' name='signup' value='Sign up')
+
+    | <p>If you already have an account then you can <a href="/login">log in here</a></p>
+
+

@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    h1 Top Secret Website
+
+    h2 Please log in here
+
+    //This is where authentication error messages wil be displayed
+    //if message.length > 0
+    p=message
+
+    form(action='/login' method='post')
+        label username
+        input(name='username' type='text' required)
+        br
+        label password
+        input(name='password' type='password' required)
+        br
+        input(name='login_button' type='submit' value='Login')
+
+    | <p>If you don't have an account then you can <a href="/signup"> sign up here</a></p>
+
+
+
+
