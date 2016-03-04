@@ -6,7 +6,7 @@ var passport = require('passport');
 router.get('/', function(req, res, next) {
   //This will probably be the home page for your application
   //Let's redirect to the signup page.
-  res.redirect('/signup');
+  res.redirect('/login');
 });
 
 
@@ -29,9 +29,10 @@ router.post('/signup', passport.authenticate('local-signup', {
 }));
 
 
+
 /* GET login page */
 router.get('/login', function(req, res, next){
-  res.render('login', { message : req.flash('loginMessage')})
+  res.render('login', { updateMessage : req.flash('loginMessage')})
 });
 
 
@@ -54,9 +55,47 @@ router.get('/logout', function(req, res, next) {
 
 /* GET secret page. Note isLoggedIn middleware - verify if user is logged in */
 router.get('/secret', isLoggedIn, function(req, res, next) {
-  res.render('secret', {user : req.user});
+  res.render('secret', {user : req.user, updateMessage: req.flash('updateMsg') });
 
 });
+
+
+
+router.post('/saveSecretInfo', isLoggedIn, function(req, res, next){
+
+  //Since we are letting the user update one or none or both, need to
+  //check that there is a value to update.
+
+  var newData = {};
+
+  if (req.body.favoriteColor != '') {
+     newData.favoriteColor = req.body.favoriteColor;
+  }
+  if (req.body.luckyNumber != '') {
+    newData.luckyNumber = req.body.luckyNumber;
+  }
+
+  //Update our user wih the new data.
+  req.user.update(newData, function(err) {
+    if (err) {
+      console.log('error ' + err);
+      req.flash('updateMsg', 'Error updating');
+     }
+
+    else {
+      console.log('updated');
+      req.flash('updateMsg', 'Updated data');
+    }
+
+    //Redirect back to secret page, which will fetch and show the updated data.
+    res.redirect('/secret');
+
+  })
+
+});
+
+
+
 
 /* Middleware function. If user is logged in, call next - this calls the next
 middleware (if any) to continue chain of request processing. Typically, this will
@@ -78,5 +117,8 @@ function isLoggedIn(req, res, next) {
 
 
 
-
 module.exports = router;
+
+
+
+
