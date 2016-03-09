@@ -55,7 +55,7 @@ router.get('/logout', function(req, res, next) {
 
 /* GET secret page. Note isLoggedIn middleware - verify if user is logged in */
 router.get('/secret', isLoggedIn, function(req, res, next) {
-  res.render('secret', {user : req.user, updateMessage: req.flash('updateMsg') });
+  res.render('secret', {user : req.user.public_profile, updateMessage: req.flash('updateMsg') });
 
 });
 
