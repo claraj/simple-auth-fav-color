@@ -32,7 +32,7 @@ router.post('/signup', passport.authenticate('local-signup', {
 
 /* GET login page */
 router.get('/login', function(req, res, next){
-  res.render('login', { updateMessage : req.flash('loginMessage')})
+  res.render('login', { message : req.flash('loginMessage')})
 });
 
 
